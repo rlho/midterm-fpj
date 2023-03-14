@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/midterm-fpj/css/style.css">
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <!-- <script src="/midterm-fpj/js/joshscript.js"></script> -->
+    <title>FPJ//First Person Josh</title>
+</head>
+<body>
+    <!-- this is the main frame -->
+    <div id="main">
+        <h1>FPJ (First Person Josh)</h1>
+        <!-- Josh's active camera view -->
+        <div id="joshLiveView" class="greybox">
+            <div id="videoDiv">
+                <!-- this is where the direct camera feed goes -->
+                <video muted autoplay id="cameraMonitor" width="640" height="480"></video>
+                <canvas id="cameraCanvas" width="640" height="480"></canvas>
+            </div> 
+            <div id="missionText">
+                <b>Current task:</b>
+                <p id="taskText">Waiting for task to be selected...</p>
+            </div> 
+
+            <div class="header">
+                <button id="actionCompleteButton" onclick="fpjTaskComplete">Task Completed</button>
+            </div>
+             
+        </div>
+        <br>
+        <!-- Josh's action selection view -->
+        <div id="joshActionSelectionView" class="greybox">
+            <div id="actionSelecttext" class="header">
+                <br>
+                <h1>Josh, select a task</h1>
+            </div>
+            <div id="suggestedTasks">
+                <div class="suggestedTask">waiting for submissions</div>
+                <div class="suggestedTask">something</div>
+                <div class="suggestedTask">something</div>
+                <div class="suggestedTask">something</div>
+                <div class="suggestedTask">something</div>
+                <div class="suggestedTask">something</div>
+                <div class="suggestedTask">something</div>
+                <div class="suggestedTask">something</div>
+            </div>
+            <div class="header">
+                <h2 id="errorText">or</h2>
+                <button id="joshDisconnectButton" onclick="location.href='/midterm-fpj/index.html'">disconnect</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/midterm-fpj/js/joshscript.js"></script>
+</body>
+</html>
