@@ -1,0 +1,83 @@
+/* palette
+CSS HEX
+--white: #fcfcfcff;
+--mindaro: #d2f898ff;
+--yellow: #f6f930ff;
+--jet: #2f2f2fff;
+--black: #000000ff;
+*/
+
+
+html, body {
+    background-color: #f6f930ff;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #2f2f2fff;
+    /* height: window.innerHeight;
+    width: window.innerWidth; */
+    margin: 0;
+    padding: 0;
+}
+
+#main {
+    /* background-color: #2f2f2f99; */
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+}
+
+#videoDiv { 
+    position: absolute;
+    background-color: blue;
+    width: 50vw;
+    height: 37.5vw;
+    /* height: 480px; */
+    /* aspect-ratio: 640/480; */
+    top: 12%;
+    left: 12%;
+    border-radius: 30px;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+} 
+
+#missionText { 
+    position: absolute;
+    color: red;
+    top: 7%;
+    left: 50%;
+    width: 50vw;
+} 
+
+#actionCompleteButton { 
+    border-radius: 3%;
+} 
+
+
+/* for task select view */
+#suggestedTasks {
+    display: flex;
+    overflow-x: auto;
+    position: absolute;
+    max-width: 100vw;;
+    /* top: 75%; */
+    bottom: 5%;
+}
+
+.task {
+    color: #000000ff;
+    min-width: 10em;
+    min-height: 5em;
+    margin-left: 20px;
+    padding: 10px;
+    border-radius: 5%;
+}
+
+.active {
+    background-color: #d2f898ff;
+    cursor: pointer;
+}
+
+.inactive {
+    background-color: #2f2f2fff;
+    cursor: default;
+}

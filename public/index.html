@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./fpjcss/style.css">
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <title>FPJ//First Person Josh</title>
+</head>
+<body>
+    <!-- this is the main frame -->
+    <div id="main">
+        <h1>FPJ (First Person Josh)</h1>
+        <div id="blurb">
+            <p>Ever wanted to <i>be</i> Josh? Now's your chance.
+            When he is available to be controlled, send him a command.
+            Maybe he will accept your request if you ask nicely.</p>
+        </div>
+        <!-- controller view -->
+        <div id="controllerView" class="greybox">
+            <div id="videoFeed">This is the video feed 
+                <canvas id="joshCanvas" width="640" height="480"></canvas>
+            </div> 
+            
+            <div id="activeTask">
+                <b>Current task:</b>
+                <p id="taskText">No current task or Josh is disconnected</p>
+            </div> 
+            
+            <div id="inputBoxDiv">
+                <input type="text" name="controllerSubmissionText" id="controllerSubText" placeholder="enter your task here">
+                <button id="controllerSubButton" onclick="sendSuggestion()">Suggest</button>
+            </div>
+            
+            <div id="suggestionBox">
+                <h3>Suggested tasks</h3>
+                <div>something</div>
+                <div>something</div>
+                <div>something</div>
+                <div>something</div>
+                <div>something</div>
+                <div>something</div>
+                <div>something</div>
+                <div>something</div>
+                <div>something</div>
+                <div>something</div>
+                <div>something</div>
+                <div>something</div>
+            </div> 
+            <div class="header">
+                <h2>or </h2>
+                <button id="joshDisconnectButton" onclick="location.href='/midterm-fpj/index.html'" style="background-color: #d2f898ff;">disconnect</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="./fpjjs/controllerscript.js"></script>
+</body>
+</html>
