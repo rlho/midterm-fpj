@@ -53,7 +53,6 @@ html, body {
 } 
 
 
-/* for task select view */
 #suggestedTasks {
     display: flex;
     overflow-x: auto;

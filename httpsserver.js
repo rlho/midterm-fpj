@@ -90,8 +90,34 @@ io.sockets.on('connection',
 		  });
     
 		// for FPJ
+		// save ID of Josh
 
+		// force refresh for new connections
+		socket.on('forceRefresh', function() {
+			socket.emit('refreshTasks', taskList);
+		})
 
+		// receive task suggestions
+		socket.on('newSuggestion', function(data) {
+			console.log('fpj new suggestion received');
+			taskList.push(data);
+			io.emit('refreshTasks', taskList);
+		});
+
+		// clear tasks when task selected
+		socket.on('clearTasks', function() {
+			console.log('fpj tasks cleared');
+			taskList = [];
+			io.emit('refreshTasks', taskList);
+		});
+
+		// send task (string) when task selected
+		socket.on('taskChosen', function(data) {
+			console.log('fpj task chosen');
+			io.emit('taskChosen', data);
+		});
+
+		// disconnect
 		socket.on('disconnect', function() {
 			console.log("Client has disconnected");
 			io.emit('disconnected', socket.id);
@@ -105,29 +131,29 @@ let fpjJoshID = "";
 let fpjConnectedControllers = [];
 let taskList = [];
 
-// for conndev
-const mqtt = require('mqtt')
-const client  = mqtt.connect('mqtt://test.mosquitto.org')
-const path = './public/conndev/itpee/log.json';
-const stream = fs.createWriteStream(path, {flags:'a'});
+// // for conndev
+// const mqtt = require('mqtt')
+// const client  = mqtt.connect('mqtt://test.mosquitto.org')
+// const path = './public/conndev/itpee/log.json';
+// const stream = fs.createWriteStream(path, {flags:'a'});
 
-client.on('connect', function () {
-  client.subscribe('conndev/joshjoshjosh', function (err) {
-    if (!err) {
-    //   client.publish('conndev/joshjoshjosh', 'server subscribed to conndev/joshjoshjosh')
-    }
-  })
-})
+// client.on('connect', function () {
+//   client.subscribe('conndev/joshjoshjosh', function (err) {
+//     if (!err) {
+//     //   client.publish('conndev/joshjoshjosh', 'server subscribed to conndev/joshjoshjosh')
+//     }
+//   })
+// })
 
-client.on('message', function (topic, message) {
-  // message is Buffer
-  let toLogText = message.toString();
-  console.log(toLogText);
-  stream.write(toLogText + "\n");
-//   client.end()
-})
+// client.on('message', function (topic, message) {
+//   // message is Buffer
+//   let toLogText = message.toString();
+//   console.log(toLogText);
+//   stream.write(toLogText + "\n");
+// //   client.end()
+// })
 
-client.on('error',(error) => {
-    console.error(error);
-    // process.exit(1);
-});
+// client.on('error',(error) => {
+//     console.error(error);
+//     // process.exit(1);
+// });

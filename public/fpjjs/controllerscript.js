@@ -1,42 +1,52 @@
 var socket = io.connect();
 
-var socketImgs = {};
-
 socket.on('connect', function(){
     console.log("Connected");
+    socket.emit('forceRefresh');
 });
 
-
-
 function sendSuggestion() {
-    let suggestionText = document.getElementById('controllerSubText').value;
+    let inputField = document.getElementById('controllerSubText')
+    let suggestionText = inputField.value;
 
     // console.log(suggestionText);
 
-    socket.emit()
+    socket.emit('newSuggestion', suggestionText);
 
-    document.getElementById('controllerSubText').value = '';
+    inputField.value = '';
 }
 
+socket.on('refreshTasks', function(data) {
+    let taskList = document.getElementById("suggestedTasks");
+    while (taskList.hasChildNodes()) {
+        taskList.removeChild(taskList.firstChild);
+    };
+    data.forEach(element => {
+        let task = document.createElement("div");
+        task.setAttribute("class", "task");
+        task.innerHTML = element;
+        taskList.appendChild(task);
+    });
+    console.log('list of suggestions refreshed');
+});
 
 
-// socket.on('fpjJoshDisconnected', function() {
-//     console.log("josh has disconnected");
-//     fpjJoshID = "";
-//     io.emit('fpjJoshDisconnected');
-// });
+socket.on('taskChosen', function(data) {
+    let taskText = document.getElementById("taskText");
+    taskText.innerHTML = data;
+});
 
-// socket.on('task selected', function(data) {
-//     console.log('Josh picked: '+data);
-//     io.emit('josh has picked', data);
-//     taskList = [];
-// });
+// https://www.w3schools.com/howto/howto_js_trigger_button_enter.asp
+// Get the input field
+var input = document.getElementById("controllerSubText");
 
-// socket.on('task completed', function(data) {
-//     console.log('task completed by Josh');
-//     io.emit('task completed');
-// });
-
-// socket.on('fpj new frame', function(data) {
-//     io.emit('new josh frame', data);
-// });
+// Execute a function when the user presses a key on the keyboard
+input.addEventListener("keypress", function(event) {
+    // If the user presses the "Enter" key on the keyboard
+    if (event.key === "Enter") {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Trigger the button element with a click
+        document.getElementById("controllerSubButton").click();
+    }
+});
