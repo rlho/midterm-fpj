@@ -53,9 +53,9 @@ window.addEventListener("load", function () {
 
   socket.on('fpjHostyDisconnect', function(data) {
     // if (data == myHostyPeer.socket_id) {
-    //     window.location.replace("/");
+    //     window.location.replace("/fpj/");
     // }
-    window.location.replace("/");
+    window.location.replace("/fpj/");
   });
 });
 
@@ -67,7 +67,7 @@ function hauntHosty() {
 }
 
 function unhaunt() {
-  window.location.replace("/");
+  window.location.replace("/fpj/");
 }
 
 function hideGhostyConnectOptions() {
@@ -271,7 +271,7 @@ class SimplePeerWrapper {
 
     this.simplepeer.on("close", () => {
       console.log("Got close event");
-      window.location.replace("/");
+      window.location.replace("/fpj/");
     });
 
     this.simplepeer.on("error", (err) => {
