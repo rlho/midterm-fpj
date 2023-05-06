@@ -1,126 +1,214 @@
-// sketch things
-var p5canv;
-var isOccupied = false;
+var myGhostyPeer;
+var mystream;
+var socket;
 
-// socket.io things
-var socket = io.connect();
+window.addEventListener("load", function () {
+  // socket.io things
+  socket = io.connect();
 
-socket.on('connect', function(){
+  socket.on("connect", function () {
     console.log("Connected");
-    socket.emit('forceRefresh');
+  });
+
+  // tell the server that josh is trying to connect
+  socket.emit("fpjHostyConnect");
+
+  // this shouldn't happen but I should make this work for futureproofing
+  //catch double up connections
+  socket.on("fpjHostyDoubleUp", function () {
+    // decide what to do with double up joshes
+    console.log("host is already connected, redirecting...");
+    window.location.replace("../");
+  });
+
+  initCapture();
 });
 
-// tell the server that josh is trying to connect
-socket.emit('fpjJoshConnect');
-
-//catch both connection cases
-socket.on('joshIsAlreadyConnected', function() {
-    document.getElementById('videoDiv').style.display = 'none';
-    document.getElementById('actionCompleteButton').style.display = 'none';
-    document.getElementById('suggestedTasks').style.display = 'none';
-    
-    document.getElementById('taskText').innerHTML = "sorry someone else is josh, please try again later";
-    
-    isOccupied = true;
-    
-    return;
-});
-
-socket.on('refreshTasks', function(data) {
-    let taskList = document.getElementById("suggestedTasks");
-    while (taskList.hasChildNodes()) {
-        taskList.removeChild(taskList.firstChild);
-    };
-    data.forEach(element => {
-        let task = document.createElement("div");
-        task.setAttribute("class", "task active");
-        task.innerHTML = element;
-        taskList.appendChild(task);
-    });
-    console.log('list of suggestions refreshed');
-    // make list clickable
-    for (var i = 0; i < taskList.children.length; i++) {
-        // taskList.children[i].addEventListener('click', taskSelect(e));
-    }
-});
-
-function taskSelect(e) {
-    console.log('selected task ' + e)
-    // let taskList = document.getElementById("suggestedTasks");
-    let taskText = document.getElementById("taskText");
-    taskText.innerHTML = e.currentTarget.innerHTML;
-    // clear server array
-    socket.emit('taskChosen', taskIndex.innerHTML);
-    socket.emit('clearTasks');
-}
-
-function setup() {
-    if (!isOccupied) {
-        // Canvas element on the page
-        var videoDiv = document.getElementById('videoDiv');
-        // var context = thecanvas.getContext('2d');
-
-        // p5canv = createCanvas(640, 480);
-        // p5canv.parent(videoDiv);
-        var constraints = {
-            audio: false,
-            video: {
-            facingMode: {
-                exact: "environment"
+function initCapture() {
+  console.log("initCapture");
+  // camera selecting
+  navigator.mediaDevices
+    .getUserMedia({
+      audio: true,
+      video: true,
+    })
+    .then(function () {
+      if (!navigator.mediaDevices?.enumerateDevices) {
+        console.log("enumerateDevices() not supported.");
+      } else {
+        navigator.mediaDevices
+          .enumerateDevices()
+          .then((devices) => {
+            var camera = devices.find(
+              (device) => device.label == "Back Ultra Wide Camera"
+            );
+            if (camera) {
+              var constraints = {
+                deviceId: camera.deviceId,
+              };
+              return navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: constraints,
+              });
+            } else {
+              return navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: {
+                  facingMode: "environment",
+                },
+              });
             }
-            }    
-            //video: {
-            //facingMode: "user"
-            //} 
-        };
-        // capture = createCapture(constraints);
-        
-        // capture.hide();
-    }  else {
-        console.log("josh is occupied");
+          })
+          .then(function (stream) {
+            mystream = stream;
+            finishSetupSocket();
+          })
+          .catch(function (err) {
+            /* Handle the error */
+            alert(err);
+          });
+      }
+    })
+    .catch(function (err) {
+      /* Handle the error */
+      alert(err);
+    });
+}
+
+function finishSetupSocket() {
+    socket.emit("fpjHostyPing");
+  socket.emit("fpjGhostyCheck");
+
+  // Receive connection request from server
+  socket.on("fpjGhostyConnect", function (data) {
+    // data = {id: string, ghostName: string}
+    if (data.id != socket.id) {
+      // create a new simplepeer and we'll be the "initiator"
+      let simplepeer = new SimplePeerWrapper(true, data.id, socket, mystream);
+      myGhostyPeer = simplepeer;
+      console.log("clearing idle UI");
+      document.getElementById("ghostName").innerHTML = data.ghostName;
+      document.getElementById("idleScreen").classList.add("hidden");
+      // document.getElementsByClassName('onlyIfConnected').forEach((element) => {
+      //     element.classList.remove('hidden');
+      // });
+      let myelements = document.getElementsByClassName("onlyIfConnected");
+      for (var i = 0; i < myelements.length; i++) {
+        myelements.item(i).classList.remove("hidden");
+      }
+      console.log("new ghosty connected: " + data.id);
     }
+  });
+
+  // when audience member disconnects
+  socket.on("fpjGhostyDisconnect", function (data) {
+    console.log("ghosty has disconnected: " + data);
+    myGhostyPeer = null;
+    // clear out UI and go back to idle page
+    console.log("clearing active UI");
+    document.getElementById("ghostName").innerHTML = "no one :&#40";
+    document.getElementById("idleScreen").classList.remove("hidden");
+    let myelements = document.getElementsByClassName("onlyIfConnected");
+    for (var i = 0; i < myelements.length; i++) {
+      myelements.item(i).classList.add("hidden");
+    }
+  });
+
+  socket.on("disconnect", function (data) {
+    console.log("Socket disconnected");
+  });
+
+  socket.on("fpjNewInstruction", function (data) {
+    console.log("new instruction: " + data);
+    document.getElementById("displayMessageText").innerHTML = data;
+  });
+
+  socket.on("fpjClearInstruction", function () {
+    console.log("instruction cleared");
+    document.getElementById("displayMessageText").innerHTML = "";
+  });
+
+  socket.on("fpjMuteToggle", function(isMuted) {
+    console.log("mute toggled to " + isMuted);
+    document.getElementById(myGhostyPeer.socket_id).muted = isMuted;
+  });
+
+  socket.on("fpjSignal", function (to, from, data) {
+    console.log("Got a signal from the server: ", to, from, data);
+
+    if (myGhostyPeer.socket_id == from) {
+      myGhostyPeer.inputsignal(data);
+    } else {
+      console.log("signal couldn't find peer");
+    }
+  });
 }
 
-function draw() {
-    // if (!isOccupied) {
-    //     image(capture, 0, 0);
+// A wrapper for simplepeer as we need a bit more than it provides
+class SimplePeerWrapper {
+  constructor(initiator, socket_id, socket, stream) {
+    this.simplepeer = new SimplePeer({
+      config: {
+        iceServers: [
+          { urls: "stun:stun.l.google.com:19302" },
+          { urls: "stun:stun2.l.google.com:19302" },
+        ],
+      },
+      initiator: initiator,
+      trickle: false,
+    });
 
-    //     // // Create a data URL from the canvas
-    //     // console.log(p5canv.canvas);
-    //     // var dataUrl = p5canv.toDataURL('image/webp', 1);
-    //     var dataUrl = p5canv.canvas.toDataURL();
-        
+    // Their socket id, our unique id for them
+    this.socket_id = socket_id;
 
-    //     // // Optionally draw it to an image object to make sure it works
-    //     // document.getElementById('imagefile').src = dataUrl;
+    // Socket.io Socket
+    this.socket = socket;
 
-    //     // // Send it via our socket server the same way as we send the image
-    //     // console.log(dataUrl);
-    //     socket.emit('josh frame', dataUrl);
+    // Our video stream - need getters and setters for this
+    this.stream = stream;
 
-    //     setTimeout(draw,300);
-    // }
+    // simplepeer generates signals which need to be sent across socket
+    this.simplepeer.on("signal", (data) => {
+      console.log("emitting simplepeer signal");
+      this.socket.emit("fpjSignal", this.socket_id, this.socket.id, data);
+    });
+
+    // When we have a connection, send our stream
+    this.simplepeer.on("connect", () => {
+      console.log("CONNECTED to Peer");
+      console.log(this.simplepeer);
+
+      // Let's give them our stream
+      this.simplepeer.addStream(stream);
+      console.log("Send our stream");
+    });
+
+    // Stream coming in to us
+    this.simplepeer.on("stream", (stream) => {
+      console.log("Incoming Stream");
+      let ghostyAudio = document.createElement("AUDIO");
+      ghostyAudio.id = this.socket_id;
+      ghostyAudio.srcObject = stream;
+      ghostyAudio.muted = true;
+      ghostyAudio.onloadedmetadata = function (e) {
+        ghostyAudio.play();
+      };
+      document.body.appendChild(ghostyAudio);
+      console.log(ghostyAudio);
+    });
+
+    this.simplepeer.on("close", () => {
+      console.log("Got close event");
+      // 
+      // remove audio element
+    });
+
+    this.simplepeer.on("error", (err) => {
+      console.log(err);
+    });
+  }
+
+  inputsignal(sig) {
+    this.simplepeer.signal(sig);
+  }
 }
-
-function taskSelected(selectedTaskIndex) {
-    console.log('task selected');
-    // send selected task as a string to server then controllers
-    // and change current task to this task
-
-    let data = {
-        taskIndex: selectedTaskIndex
-    };
-    socket.emit('josh has picked a task', data);
-
-    // clear client list of tasks (change colour and make unclickable)
-    socket.emit('clearTask');
-
-
-}
-
-function fpjTaskComplete() {
-    console.log('task completed');
-    // activate new list of actions (change colour and make clickable)
-    
-}
-

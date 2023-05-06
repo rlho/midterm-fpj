@@ -1,82 +1,190 @@
-/* palette
-CSS HEX
---white: #fcfcfcff;
---mindaro: #d2f898ff;
---yellow: #f6f930ff;
---jet: #2f2f2fff;
---black: #000000ff;
-*/
-
-
-html, body {
-    background-color: #d2f898ff;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #2f2f2fff;
-    margin: 0;
+html,
+body {
+  background-color: #eae8da;
+  font-family: "Inter", Helvetica, sans-serif;
+  color: black;
+  margin: 0;
+  padding: 0;
 }
 
 #main {
-    /* background-color: #2f2f2f99; */
-    height: 100vh;
-    max-width: 600px;
-    margin: auto;
-    padding: 10px;
+  /* background-color: red; */
+  max-width: 600px;
+  margin: auto;
+  padding: 10px;
+}
+
+#loginScreen {
+  background-color: #eae8da;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  /* display: none; */
+}
+
+#loginUI {
+  width: 330px;
+  height: 230px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#lil-hosty-boy-login {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.textInput {
+  background-color: #d9d9d9;
+  height: 40px;
+  width: 250px;
+  margin-top: 10px;
+  margin-right: auto;
+  font-size: 16px;
+  padding-left: 10px;
+  border: 3px solid black;
+  border-radius: 15px;
+  display: inline;
+}
+
+#hauntButton {
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #f0dd34;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 50px;
+  padding-right: 50px;
+  border: 3px solid black;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.onlyIfConnected {
+  display: flex;
+}
+
+.hidden {
+  display: none;
+}
+
+#lil-hosty-boy {
+  display: flex;
+  margin-top: 80px;
+  margin-bottom: -20px;
+  margin-right: 20px;
+  justify-content: right;
+  position: relative;
+  z-index: 1;
+}
+
+#videoDiv {
+  /* background-color: #d9d9d9; */
+  overflow: hidden;
+  min-height: 200px;
+  height: auto;
+  padding: 0;
+}
+
+#hostyCam {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: inline-block;
+  border-radius: 15px;
+}
+
+.ghostUI {
+  max-width: 330px;
+  width: auto;
+  margin: auto;
+  margin-top: -20px;
+  position: relative;
+  z-index: 1;
+}
+
+#ghostStatus {
+  display: flex;
+}
+
+#ghost-display-bubble {
+  margin-right: auto;
+}
+
+#displayMessageText {
+  position: absolute;
+  padding-top: 10px;
+  padding-left: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  max-width: 250px;
+}
+
+#ghostName {
+  text-align: right;
+}
+
+/* .ghostMessage {
+    display: flex;
+    margin-bottom: 20px;
+} */
+
+/* #submit-button {
+    border: 3px solid black;
+    border-radius: 15px;
+    background-color: #0226A4;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    margin-top: 8px;
+    cursor: pointer;
+} */
+
+#action-legend {
+  margin-top: 20px;
+}
+
+#speak-button {
+  border: 3px solid black;
+  border-radius: 15px;
+  background-color: #22a737;
+  color: white;
+  width: 100%;
+  font-size: 28px;
+  font-weight: 600;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+#unhauntButton {
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #ea4040;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 50px;
+  padding-right: 50px;
+  border: 3px solid black;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-bottom: 50px;
 }
 
 @media only screen and (max-width: 600px) {
-    * {
-        position: static;
-    }
-    main {
-        max-width: 100vw;
-    }
-  }
-
-#blurb {
-    /* position: fixed;
-    top: 20px;
-    left: 20px; */
-    background-color: #f6f930ff;
-    max-width: 400px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    border-radius: 30px;
 }
 
-#videoDiv { 
-    background-color: blue;
-    max-width: 600px;
-    /* height: 37.5vw; */
-    border-radius: 30px;
-    overflow: hidden;
-    padding: 0;
-    margin-top: 10px;
-} 
+#titleCard {
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
 
-#missionText { 
-    color: red;
-    max-width: 600px;
-    margin-top: 10px;
-} 
-
-#inputBoxDiv {
-    margin: auto;
-}
-
-#suggestedTasks {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 600px;
-}
-
-.task {
-    color: #000000ff;
-    min-width: 30vw;
-    min-height: 5em;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: #f6f930ff;
 }

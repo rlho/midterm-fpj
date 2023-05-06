@@ -1,0 +1,6 @@
+<svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="submit-button">
+<rect id="Rectangle 5" x="2" y="2" width="46" height="46" rx="15" fill="#0226A4" stroke="#1E1E1E" stroke-width="3"/>
+<path id="Arrow 1" d="M38.5 15C38.5 14.1716 37.8284 13.5 37 13.5H23.5C22.6716 13.5 22 14.1716 22 15C22 15.8284 22.6716 16.5 23.5 16.5L35.5 16.5L35.5 28.5C35.5 29.3284 36.1716 30 37 30C37.8284 30 38.5 29.3284 38.5 28.5V15ZM15.0607 39.0607L38.0607 16.0607L35.9393 13.9393L12.9393 36.9393L15.0607 39.0607Z" fill="white"/>
+</g>
+</svg>

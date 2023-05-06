@@ -1,3 +1,6 @@
+// this file contains components for other class projects, not all are used in this app
+// please refer to sections marked FPJ
+
 // We need the file system here
 var fs = require('fs');
 
@@ -90,70 +93,155 @@ io.sockets.on('connection',
 		  });
     
 		// for FPJ
-		// save ID of Josh
 
-		// force refresh for new connections
-		socket.on('forceRefresh', function() {
-			socket.emit('refreshTasks', taskList);
+		// saves Hosty's ID
+		socket.on('fpjHostyConnect', function() {
+			if (fpjHostyID == "") {
+				fpjHostyID = socket.id;
+				fpjHostySocket = socket;
+				console.log("fpj: Josh connected with socket.id: " + fpjHostyID);
+			} else {
+				console.log("fpj: Josh already connected, connection attempt rejected");
+				socket.emit('fpjHostyDoubleUp');
+			}
+		});
+
+		socket.on('fpjHostyPing', function() {
+			io.emit('fpjYesHosty');
 		})
 
-		// receive task suggestions
-		socket.on('newSuggestion', function(data) {
-			console.log('fpj new suggestion received');
-			taskList.push(data);
-			io.emit('refreshTasks', taskList);
+		socket.on('fpjGhostyCheck', function() {
+			if (fpjGhostyID != "") {
+				let dataToSend = {
+					id: fpjGhostyID,
+					ghostName: fpjGhostyName
+				}
+				socket.emit('fpjGhostyConnect', dataToSend);
+			} else {
+				console.log('no ghosty available');
+			}
 		});
 
-		// clear tasks when task selected
-		socket.on('clearTasks', function() {
-			console.log('fpj tasks cleared');
-			taskList = [];
-			io.emit('refreshTasks', taskList);
+		// check for active ghosty
+		socket.on('fpjHostyGhostyCheck', function() {
+			if (fpjHostyID == "") {
+				socket.emit('fpjNoHosty');
+			} else if (fpjGhostyID != "") {
+				socket.emit('fpjGhostyDoubleUp');
+			}
 		});
 
-		// send task (string) when task selected
-		socket.on('taskChosen', function(data) {
-			console.log('fpj task chosen');
-			io.emit('taskChosen', data);
+		// save ghosty's ID
+		socket.on('fpjGhostyConnect', function(data) {
+			if (fpjGhostyID == "") {
+				fpjGhostyID = socket.id;
+				fpjGhostySocket = socket;
+				fpjGhostyName = data;
+				console.log("fpj: Ghosty connected with socket.id: " + fpjHostyID);
+				console.log("fpj: and name: "+ fpjGhostyName);
+				// for ghosty
+				socket.emit('fpjGhostyConnected', fpjHostyID);
+				// for hosty
+				let dataToSend = {
+					id: socket.id,
+					ghostName: data
+				}
+				io.emit('fpjGhostyConnect', dataToSend);
+			} else {
+				console.log("fpj: Ghosty already connected, connection attempt rejected");
+				socket.emit('fpjGhostyDoubleUp'); //
+			}
+		});
+		
+		// keystroke handling
+		socket.on('fpjKeystroke', function(data) {
+			let dataToSend = "";
+			switch (data) {
+				case "KeyS":
+					dataToSend = "Move backward";
+					break;
+				case "KeyW":
+					dataToSend = "Move forward";
+					break;
+				case "KeyA":
+					dataToSend = "Move left";
+					break;
+				case "KeyD":
+					dataToSend = "Move right";
+					break;
+				case "ArrowDown":
+					dataToSend = "Look down";
+					break;
+				case "ArrowUp":
+					dataToSend = "Look up";
+					break;
+				case "ArrowLeft":
+					dataToSend = "Look left";
+					break;
+				case "ArrowRight":
+					dataToSend = "Look right";
+					break;
+				case "KeyJ":
+					dataToSend = "Interact";
+					break;
+				case "KeyH":
+					dataToSend = "Hold/Release item";
+					break;
+			}
+			io.emit('fpjNewInstruction', dataToSend);
+		});
+
+		socket.on('fpjClearInstruction', function() {
+			io.emit('fpjClearInstruction');
+		});
+
+		socket.on('fpjMuteToggle', function(isMuted) {
+			fpjHostySocket.emit('fpjMuteToggle', isMuted);
+		});
+
+		// simple peer signalling
+		socket.on('fpjSignal', (to, from, data) => {
+			console.log("fpj SIGNAL", to, data);
+			if (fpjGhostySocket.id == to) {
+				console.log("Found Ghosty, sending signal");
+				fpjGhostySocket.emit('fpjSignal', to, from, data);
+			} else if (fpjHostySocket.id == to) {
+				console.log("Found Hosty, sending signal");
+				fpjHostySocket.emit('fpjSignal', to, from, data);
+			} else {
+				console.log("couldn't send signal ghosty or hosty :(")
+			}
 		});
 
 		// disconnect
 		socket.on('disconnect', function() {
 			console.log("Client has disconnected");
 			io.emit('disconnected', socket.id);
+			// if socket.id is Hosty, then empty HostyID string
+			if (fpjHostyID == socket.id) {
+				fpjHostyID = "";
+				fpjHostySocket = null;
+				console.log("fpj: Josh disconnected, fpjHostyID cleared");
+				io.emit('fpjHostyDisconnect', socket.id);
+			}
+			// same for ghosty
+			if (fpjGhostyID == socket.id) {
+				fpjGhostyID = "";
+				fpjGhostyName = "";
+				fpjGhostySocket = null;
+				console.log("fpj: Ghosty disconnected, fpjGhostyID and fpjGhostyName cleared");
+				io.emit('fpjGhostyDisconnect', socket.id);
+			}
 		});
 
 	}
 );
 
 // for FPJ
-let fpjJoshID = "";
-let fpjConnectedControllers = [];
-let taskList = [];
+let fpjHostySocket;
+let fpjHostyID = "";
+let fpjGhostySocket;
+let fpjGhostyID = "";
+let fpjGhostyName = "";
 
-// // for conndev
-// const mqtt = require('mqtt')
-// const client  = mqtt.connect('mqtt://test.mosquitto.org')
-// const path = './public/conndev/itpee/log.json';
-// const stream = fs.createWriteStream(path, {flags:'a'});
-
-// client.on('connect', function () {
-//   client.subscribe('conndev/joshjoshjosh', function (err) {
-//     if (!err) {
-//     //   client.publish('conndev/joshjoshjosh', 'server subscribed to conndev/joshjoshjosh')
-//     }
-//   })
-// })
-
-// client.on('message', function (topic, message) {
-//   // message is Buffer
-//   let toLogText = message.toString();
-//   console.log(toLogText);
-//   stream.write(toLogText + "\n");
-// //   client.end()
-// })
-
-// client.on('error',(error) => {
-//     console.error(error);
-//     // process.exit(1);
-// });
+// end FPJ
