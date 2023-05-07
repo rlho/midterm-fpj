@@ -1,0 +1,57 @@
+html, body {
+    background-color: black;
+    font-family: "Inter", Helvetica, sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+#main {
+    /* background-color: #2f2f2f99; */
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* display: none; */
+}
+
+#displayMessageText {
+    /* color: black; */
+    font-size: 40px;
+    font-weight: 600;
+    max-width: 150px;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+#lil-ghosty-boy {
+    transform: scale(0.75);
+    position: absolute;
+    right: 10px;
+    bottom: 50px;
+}
+
+#idleScreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    /* display: none; */
+}
+
+#idleScreen svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+}
+
+.hidden {
+    visibility: hidden;
+}

@@ -39,12 +39,26 @@ function initCapture() {
         navigator.mediaDevices
           .enumerateDevices()
           .then((devices) => {
-            var camera = devices.find(
+            // devices.forEach(device => {
+            //   console.log(device.label);
+            // });
+            var ioscamera = devices.find(
               (device) => device.label == "Back Ultra Wide Camera"
             );
-            if (camera) {
+            var andcamera = devices.find(
+              (device) => device.label == "camera2 0, facing back"
+            )
+            if (ioscamera) {
               var constraints = {
-                deviceId: camera.deviceId,
+                deviceId: ioscamera.deviceId,
+              };
+              return navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: constraints,
+              });
+            } else if(andcamera) {
+              var constraints = {
+                deviceId: andcamera.deviceId,
               };
               return navigator.mediaDevices.getUserMedia({
                 audio: true,

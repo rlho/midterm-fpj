@@ -6,8 +6,11 @@ These files must be run in conjuction with a Node server running Socket.io, Simp
 
 ## todo
 - add tap for mobile friendly
-### nice to haves
 - keyup when multi key
+- remove audio child when disconnected
+### nice to haves
+- non textual indicators for josh
+- observer mode
 - animate key presses
 - https://github.com/richtr/NoSleep.js
 - move messages and data to peer to peer
