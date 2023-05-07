@@ -3,6 +3,7 @@ var ghostyMicStream;
 var myHostyPeer;
 var isMuted = true;
 var mystream;
+// var keysDown = 1;
 
 window.addEventListener("load", function () {
   textFieldEnterTriggerSetup();
@@ -148,6 +149,8 @@ function initiateKeyboardControls() {
 }
 
 function keyDownHandler(event) {
+  // keysDown++;  
+  // console.log(keysDown);
   if (event.defaultPrevented) {
     return;
   }
@@ -193,6 +196,8 @@ function keyDownHandler(event) {
 }
 
 function keyUpHandler(event) {
+  // keysDown--;
+  // console.log(keysDown);
   if (event.defaultPrevented) {
     return;
   } else {

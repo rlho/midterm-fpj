@@ -6,8 +6,7 @@ These files must be run in conjuction with a Node server running Socket.io, Simp
 
 ## todo
 - add tap for mobile friendly
-- keyup when multi key
-- remove audio child when disconnected
+- fix keyup when multi key
 ### nice to haves
 - non textual indicators for josh
 - observer mode

@@ -126,6 +126,7 @@ function finishSetupSocket() {
     for (var i = 0; i < myelements.length; i++) {
       myelements.item(i).classList.add("hidden");
     }
+    document.getElementById(data).remove();
   });
 
   socket.on("disconnect", function (data) {
