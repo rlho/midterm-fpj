@@ -16,3 +16,5 @@ These files must be run in conjuction with a Node server running Socket.io, Simp
 - timers
 - multi user josh
 - computer vision, object detection
+- Choppy audio windows
+- Add delay to mute button, or change PTS method

@@ -146,6 +146,7 @@ function textFieldEnterTriggerSetup() {
 function initiateKeyboardControls() {
   document.addEventListener("keydown", keyDownHandler);
   document.addEventListener("keyup", keyUpHandler);
+  initClickableKeys();
 }
 
 function keyDownHandler(event) {
@@ -218,6 +219,143 @@ function ptsToggle() {
     console.log("unmuted");
   }
   socket.emit("fpjMuteToggle", isMuted);
+}
+
+function initClickableKeys() {
+  // ref: https://stackoverflow.com/a/44859462
+  // hold/release
+  let holdButton = document.getElementById('hold-release-button-legend');
+  holdButton.style.cursor = "pointer";
+  holdButton.addEventListener('mousedown', function () {
+    var event = new KeyboardEvent('keydown', {
+      code: 'KeyH',
+    });
+    // console.log(event);
+    document.dispatchEvent(event);
+  });
+  holdButton.addEventListener('mouseup', function () {
+    var event = new KeyboardEvent('keyup');
+    document.dispatchEvent(event);
+  });
+  // interact
+  let intButton = document.getElementById('interact-button-legend');
+  intButton.style.cursor = "pointer";
+  intButton.addEventListener('mousedown', function () {
+    var event = new KeyboardEvent('keydown', {
+      code: 'KeyJ',
+    });
+    document.dispatchEvent(event);
+  });
+  intButton.addEventListener('mouseup', function () {
+    var event = new KeyboardEvent('keyup');
+    document.dispatchEvent(event);
+  });
+  // moving
+  // up
+  let wButton = document.getElementById('W Button');
+  wButton.style.cursor = "pointer";
+  wButton.addEventListener('mousedown', function () {
+    var event = new KeyboardEvent('keydown', {
+      code: 'KeyW',
+    });
+    document.dispatchEvent(event);
+  });
+  wButton.addEventListener('mouseup', function () {
+    var event = new KeyboardEvent('keyup');
+    document.dispatchEvent(event);
+  });
+  // down
+  let sButton = document.getElementById('S Button');
+  sButton.style.cursor = "pointer";
+  sButton.addEventListener('mousedown', function () {
+    var event = new KeyboardEvent('keydown', {
+      code: 'KeyS',
+    });
+    document.dispatchEvent(event);
+  });
+  sButton.addEventListener('mouseup', function () {
+    var event = new KeyboardEvent('keyup');
+    document.dispatchEvent(event);
+  });
+  // left
+  let aButton = document.getElementById('A Button');
+  aButton.style.cursor = "pointer";
+  aButton.addEventListener('mousedown', function () {
+    var event = new KeyboardEvent('keydown', {
+      code: 'KeyA',
+    });
+    document.dispatchEvent(event);
+  });
+  aButton.addEventListener('mouseup', function () {
+    var event = new KeyboardEvent('keyup');
+    document.dispatchEvent(event);
+  });
+  // right
+  let dButton = document.getElementById('D Button');
+  dButton.style.cursor = "pointer";
+  dButton.addEventListener('mousedown', function () {
+    var event = new KeyboardEvent('keydown', {
+      code: 'KeyD',
+    });
+    document.dispatchEvent(event);
+  });
+  dButton.addEventListener('mouseup', function () {
+    var event = new KeyboardEvent('keyup');
+    document.dispatchEvent(event);
+  });
+  // camera
+  // up
+  let upButton = document.getElementById('up-button');
+  upButton.style.cursor = "pointer";
+  upButton.addEventListener('mousedown', function () {
+    var event = new KeyboardEvent('keydown', {
+      code: 'ArrowUp',
+    });
+    document.dispatchEvent(event);
+  });
+  upButton.addEventListener('mouseup', function () {
+    var event = new KeyboardEvent('keyup');
+    document.dispatchEvent(event);
+  });
+  // down
+  let downButton = document.getElementById('down-button');
+  downButton.style.cursor = "pointer";
+  downButton.addEventListener('mousedown', function () {
+    var event = new KeyboardEvent('keydown', {
+      code: 'ArrowDown',
+    });
+    document.dispatchEvent(event);
+  });
+  downButton.addEventListener('mouseup', function () {
+    var event = new KeyboardEvent('keyup');
+    document.dispatchEvent(event);
+  });
+  // left
+  let leftButton = document.getElementById('left-button');
+  leftButton.style.cursor = "pointer";
+  leftButton.addEventListener('mousedown', function () {
+    var event = new KeyboardEvent('keydown', {
+      code: 'ArrowLeft',
+    });
+    document.dispatchEvent(event);
+  });
+  leftButton.addEventListener('mouseup', function () {
+    var event = new KeyboardEvent('keyup');
+    document.dispatchEvent(event);
+  });
+  // right
+  let rightButton = document.getElementById('right-button');
+  rightButton.style.cursor = "pointer";
+  rightButton.addEventListener('mousedown', function () {
+    var event = new KeyboardEvent('keydown', {
+      code: 'ArrowRight',
+    });
+    document.dispatchEvent(event);
+  });
+  rightButton.addEventListener('mouseup', function () {
+    var event = new KeyboardEvent('keyup');
+    document.dispatchEvent(event);
+  });
 }
 
 // A wrapper for simplepeer as we need a bit more than it provides
