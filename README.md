@@ -4,6 +4,8 @@ This web app allows you (a ghosty) to control another person (a hosty) through a
 
 These files must be run in conjuction with a Node server running Socket.io, SimplePeer, and Express.
 
+Full documentation: https://joshjoshjosh.notion.site/FPJ-Reloaded-The-Final-Project-60b82d217d024e86ac1522199d7096d0
+
 ## todo
 - add tap for mobile friendly
 - fix keyup when multi key
