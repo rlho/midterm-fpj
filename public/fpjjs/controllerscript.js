@@ -108,7 +108,12 @@ function showGhostyUI() {
   // handle more socket events
   socket.on("fpjNewInstruction", function (data) {
     console.log("new instruction: " + data);
-    document.getElementById("displayMessageText").innerHTML = data;
+    // document.getElementById("displayMessageText").innerHTML = data;
+    let displayText = document.getElementById("displayMessageText");
+    let newDisplayText = displayText.cloneNode(true);
+    newDisplayText.innerHTML = data;
+    newDisplayText.style.animation = "instrFade 2s forwards";
+    displayText.parentNode.replaceChild(newDisplayText, displayText);
   });
 
   socket.on("fpjClearInstruction", function () {
@@ -145,7 +150,7 @@ function textFieldEnterTriggerSetup() {
 
 function initiateKeyboardControls() {
   document.addEventListener("keydown", keyDownHandler);
-  document.addEventListener("keyup", keyUpHandler);
+  // document.addEventListener("keyup", keyUpHandler);
   initClickableKeys();
 }
 
@@ -196,15 +201,14 @@ function keyDownHandler(event) {
   }
 }
 
-function keyUpHandler(event) {
-  // keysDown--;
-  // console.log(keysDown);
-  if (event.defaultPrevented) {
-    return;
-  } else {
-    socket.emit("fpjClearInstruction");
-  }
-}
+// function keyUpHandler(event) {
+//   // don't think i need this anymore commenting to block out
+//   // if (event.defaultPrevented) {
+//   //   return;
+//   // } else {
+//   //   socket.emit("fpjClearInstruction");
+//   // }
+// }
 
 function ptsToggle() {
   isMuted = !isMuted;

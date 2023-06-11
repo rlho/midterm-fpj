@@ -7,10 +7,7 @@ These files must be run in conjuction with a Node server running Socket.io, Simp
 Full documentation: https://joshjoshjosh.notion.site/FPJ-Reloaded-The-Final-Project-60b82d217d024e86ac1522199d7096d0
 
 ## todo
-- add tap for mobile friendly
-- fix keyup when multi key
 ### nice to haves
-- non textual indicators for josh
 - observer mode
 - animate key presses
 - https://github.com/richtr/NoSleep.js
@@ -18,5 +15,5 @@ Full documentation: https://joshjoshjosh.notion.site/FPJ-Reloaded-The-Final-Proj
 - timers
 - multi user josh
 - computer vision, object detection
-- Choppy audio windows
-- Add delay to mute button, or change PTS method
+- non-choppy audio on Windows
+- add delay to mute button, or change PTS method

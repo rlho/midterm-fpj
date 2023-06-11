@@ -135,12 +135,27 @@ function finishSetupSocket() {
 
   socket.on("fpjNewInstruction", function (data) {
     console.log("new instruction: " + data);
-    document.getElementById("displayMessageText").innerHTML = data;
+    //update text
+    let displayText = document.getElementById("displayMessageText");
+    let newDisplayText = displayText.cloneNode(true);
+    newDisplayText.innerHTML = data;
+    newDisplayText.style.animation = "instrFade 2s forwards";
+    displayText.parentNode.replaceChild(newDisplayText, displayText);
+    // animate indicator
+    let displayIndicator = document.getElementById("actionIndicator");
+    let newDisplayIndicator = displayIndicator.cloneNode(true);
+    let indicatorBorderStyle = textToBorderStyle(data);
+    newDisplayIndicator.style.cssText = "position: absolute;width: 100%;height: 100%;box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;";
+    newDisplayIndicator.style.cssText += indicatorBorderStyle;
+    newDisplayIndicator.style.animation = "instrFade 2s forwards";
+    displayIndicator.parentNode.replaceChild(newDisplayIndicator, displayIndicator);
   });
 
   socket.on("fpjClearInstruction", function () {
     console.log("instruction cleared");
-    document.getElementById("displayMessageText").innerHTML = "";
+    console.log("this function is no longer active and does not do anything");
+    // skipping this for new fadeout animation jun 8
+    //document.getElementById("displayMessageText").innerHTML = "";
   });
 
   socket.on("fpjMuteToggle", function(isMuted) {
@@ -226,4 +241,31 @@ class SimplePeerWrapper {
   inputsignal(sig) {
     this.simplepeer.signal(sig);
   }
+}
+
+function textToBorderStyle(instrText) {
+  // should really be using key stroke data rather than string, stop gap method instead of doing surgery on server file
+  switch (instrText) {
+    case "Move backward":
+      return "border-bottom: 60px solid green;";
+    case "Move forward":
+      return "border-top: 60px solid green;";
+    case "Move left":
+      return "border-left: 60px solid green;";
+    case "Move right":
+      return "border-right: 60px solid green;";
+    case "Look down":
+      return "border-bottom: 60px solid red;";
+    case "Look up":
+      return "border-top: 60px solid red;";
+    case "Look left":
+      return "border-left: 60px solid red;";
+    case "Look right":
+      return "border-right: 60px solid red;";
+    case "Interact":
+      return "border: 60px solid green;";
+    case "Hold/Release item":
+      return "border: 60px solid red;";
+  }
+  // returns a string for each case
 }

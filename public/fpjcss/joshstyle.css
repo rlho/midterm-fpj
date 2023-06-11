@@ -6,25 +6,36 @@ html, body {
     padding: 0;
 }
 
+/* body {
+    border: 10px solid red;
+} */
+
 #main {
-    /* background-color: #2f2f2f99; */
     width: 600px;
-    /* height: 400px; */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* display: none; */
 }
 
 #displayMessageText {
-    color: black;
+    color: white;
     font-size: 40px;
     font-weight: 600;
     max-width: 450px;
     position: absolute;
     left: 20px;
     top: 20px;
+}
+
+#actionIndicator {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    /* border: 50px solid red; */
 }
 
 #lil-ghosty-boy {
@@ -53,4 +64,13 @@ html, body {
 
 .hidden {
     visibility: hidden;
+}
+
+@keyframes instrFade {
+    0% {
+        opacity: 100%;
+    }
+    100% {
+        opacity: 0%;
+    }
 }

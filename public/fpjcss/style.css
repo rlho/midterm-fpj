@@ -188,3 +188,22 @@ body {
   z-index: 1001;
 
 }
+
+#blurb {
+  max-width: 500px;
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  text-align: justify;
+  font-size: 12px;
+}
+
+@keyframes instrFade {
+  0% {
+      opacity: 100%;
+  }
+  100% {
+      opacity: 0%;
+  }
+}
