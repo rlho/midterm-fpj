@@ -8,6 +8,8 @@ Full documentation: https://joshjoshjosh.notion.site/FPJ-Reloaded-The-Final-Proj
 
 ## todo
 ### nice to haves
+- mobile clickable buttons
+- android support
 - observer mode
 - animate key presses
 - https://github.com/richtr/NoSleep.js

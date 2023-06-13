@@ -42,18 +42,26 @@ function initCapture() {
             // devices.forEach(device => {
             //   console.log(device.label);
             // });
+            // choosing the built in mic for iPhones
+            var iosmicrophone = devices.find(
+              (device) => device.label == "iPhone Microphone"
+            );
+            var audioConstraints = {
+              deviceId: iosmicrophone.deviceId,
+            }
+            // choosing the wide camera
             var ioscamera = devices.find(
               (device) => device.label == "Back Ultra Wide Camera"
             );
             var andcamera = devices.find(
               (device) => device.label == "camera2 0, facing back"
-            )
+            );
             if (ioscamera) {
               var constraints = {
                 deviceId: ioscamera.deviceId,
               };
               return navigator.mediaDevices.getUserMedia({
-                audio: true,
+                audio: audioConstraints,
                 video: constraints,
               });
             } else if(andcamera) {
@@ -66,7 +74,7 @@ function initCapture() {
               });
             } else {
               return navigator.mediaDevices.getUserMedia({
-                audio: true,
+                audio: audioConstraints,
                 video: {
                   facingMode: "environment",
                 },
