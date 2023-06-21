@@ -2,6 +2,19 @@ var myGhostyPeer;
 var mystream;
 var socket;
 
+// get turn servers
+var turnServers = {};
+(async () => {
+  try {
+    const response = await fetch("https://fpj.metered.live/api/v1/turn/credentials?apiKey=98bac8d8be959ecddea0203fe867c1da1b21");
+    const iceServers = await response.json();
+    turnServers = iceServers;
+    console.log(turnServers);
+  } catch (error) {
+    console.error(error);
+  }
+})();
+
 window.addEventListener("load", function () {
   // socket.io things
   socket = io.connect();
@@ -64,7 +77,7 @@ function initCapture() {
                 audio: audioConstraints,
                 video: constraints,
               });
-            } else if(andcamera) {
+            } else if (andcamera) {
               var constraints = {
                 deviceId: andcamera.deviceId,
               };
@@ -98,7 +111,7 @@ function initCapture() {
 }
 
 function finishSetupSocket() {
-    socket.emit("fpjHostyPing");
+  socket.emit("fpjHostyPing");
   socket.emit("fpjGhostyCheck");
 
   // Receive connection request from server
@@ -166,7 +179,7 @@ function finishSetupSocket() {
     //document.getElementById("displayMessageText").innerHTML = "";
   });
 
-  socket.on("fpjMuteToggle", function(isMuted) {
+  socket.on("fpjMuteToggle", function (isMuted) {
     console.log("mute toggled to " + isMuted);
     document.getElementById(myGhostyPeer.socket_id).muted = isMuted;
   });
@@ -185,16 +198,25 @@ function finishSetupSocket() {
 // A wrapper for simplepeer as we need a bit more than it provides
 class SimplePeerWrapper {
   constructor(initiator, socket_id, socket, stream) {
+
     this.simplepeer = new SimplePeer({
       config: {
-        iceServers: [
-          { urls: "stun:stun.l.google.com:19302" },
-          { urls: "stun:stun2.l.google.com:19302" },
-        ],
+        iceServers: turnServers,
       },
       initiator: initiator,
       trickle: false,
     });
+
+    // this.simplepeer = new SimplePeer({
+    //   config: {
+    //     iceServers: [
+    //       { urls: "stun:stun.l.google.com:19302" },
+    //       { urls: "stun:stun2.l.google.com:19302" },
+    //     ],
+    //   },
+    //   initiator: initiator,
+    //   trickle: false,
+    // });
 
     // Their socket id, our unique id for them
     this.socket_id = socket_id;
