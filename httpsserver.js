@@ -20,16 +20,16 @@ app.get("/", function (req, res) {
 
 // Here is the actual HTTP server
 // In this case, HTTPS (secure) server
-var https = require("http");
+var https = require("https");
 
 // Security options - key and certificate
 var options = {
-  key: fs.readFileSync("server.key"),
-  cert: fs.readFileSync("server.cert"),
+  key: process.env.SERVER_KEY || fs.readFileSync("server.key"),
+  cert: process.env.SERVER_CERT || fs.readFileSync("server.cert"),
 };
 
 // We pass in the Express object and the options object
-var httpServer = https.createServer(app);
+var httpServer = https.createServer(options, app);
 
 // Default HTTPS port
 httpServer.listen(3000);
