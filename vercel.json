@@ -3,7 +3,13 @@
   "builds": [
     {
       "src": "httpsserver.js",
-      "use": "@now/node"
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/.*",
+      "dest": "httpsserver.js"
     }
   ]
 }

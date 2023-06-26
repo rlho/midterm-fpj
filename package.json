@@ -11,6 +11,7 @@
     "socket.io-client": "^4.7.0"
   },
   "scripts": {
-    "start": "node httpsserver.js"
+    "start": "node httpsserver.js",
+    "deploy": "vercel --prod"
   }
 }
