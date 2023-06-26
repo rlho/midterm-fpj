@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "httpsserver.js"
+      "dest": "/vercel/output/httpsserver.js"
     }
   ]
 }
