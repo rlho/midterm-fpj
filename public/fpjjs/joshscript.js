@@ -6,7 +6,9 @@ var socket;
 var turnServers = {};
 (async () => {
   try {
-    const response = await fetch("https://fpj.metered.live/api/v1/turn/credentials?apiKey=98bac8d8be959ecddea0203fe867c1da1b21");
+    const response = await fetch(
+      "https://fpj.metered.live/api/v1/turn/credentials?apiKey=98bac8d8be959ecddea0203fe867c1da1b21"
+    );
     const iceServers = await response.json();
     turnServers = iceServers;
     console.log(turnServers);
@@ -21,6 +23,7 @@ window.addEventListener("load", function () {
 
   socket.on("connect", function () {
     console.log("Connected");
+    console.log("call fpjHostyConnect");
   });
 
   // tell the server that josh is trying to connect
@@ -52,24 +55,32 @@ function initCapture() {
         navigator.mediaDevices
           .enumerateDevices()
           .then((devices) => {
+            console.log(devices.map((device) => console.log(device.label)));
             // devices.forEach(device => {
             //   console.log(device.label);
             // });
             // choosing the built in mic for iPhones
             var iosmicrophone = devices.find(
-              (device) => device.label == "iPhone Microphone"
+              (device) =>
+                device.label == "Default - MacBook Pro Microphone (Built-in)"
             );
+
+            console.log("ios microphone found", iosmicrophone);
             var audioConstraints = {
               deviceId: iosmicrophone.deviceId,
-            }
+            };
             // choosing the wide camera
             var ioscamera = devices.find(
-              (device) => device.label == "Back Ultra Wide Camera"
+              (device) => device.label == "FaceTime HD Camera"
             );
             var andcamera = devices.find(
               (device) => device.label == "camera2 0, facing back"
             );
+            console.log("ios camera found", ioscamera);
+            console.log("and camera", andcamera);
+            console.log("audioConstraints", audioConstraints);
             if (ioscamera) {
+              console.log("ios camera found");
               var constraints = {
                 deviceId: ioscamera.deviceId,
               };
@@ -96,6 +107,7 @@ function initCapture() {
           })
           .then(function (stream) {
             mystream = stream;
+            console.log("got stream");
             finishSetupSocket();
           })
           .catch(function (err) {
@@ -166,10 +178,14 @@ function finishSetupSocket() {
     let displayIndicator = document.getElementById("actionIndicator");
     let newDisplayIndicator = displayIndicator.cloneNode(true);
     let indicatorBorderStyle = textToBorderStyle(data);
-    newDisplayIndicator.style.cssText = "position: absolute;width: 100%;height: 100%;box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;";
+    newDisplayIndicator.style.cssText =
+      "position: absolute;width: 100%;height: 100%;box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;";
     newDisplayIndicator.style.cssText += indicatorBorderStyle;
     newDisplayIndicator.style.animation = "instrFade 2s forwards";
-    displayIndicator.parentNode.replaceChild(newDisplayIndicator, displayIndicator);
+    displayIndicator.parentNode.replaceChild(
+      newDisplayIndicator,
+      displayIndicator
+    );
   });
 
   socket.on("fpjClearInstruction", function () {
@@ -198,7 +214,6 @@ function finishSetupSocket() {
 // A wrapper for simplepeer as we need a bit more than it provides
 class SimplePeerWrapper {
   constructor(initiator, socket_id, socket, stream) {
-
     this.simplepeer = new SimplePeer({
       config: {
         iceServers: turnServers,
@@ -259,7 +274,7 @@ class SimplePeerWrapper {
 
     this.simplepeer.on("close", () => {
       console.log("Got close event");
-      // 
+      //
       // remove audio element
     });
 

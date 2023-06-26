@@ -1,6 +1,6 @@
 html,
 body {
-  background-color: #eae8da;
+  background-color: #fff;
   font-family: "Inter", Helvetica, sans-serif;
   color: black;
   margin: 0;
@@ -15,7 +15,7 @@ body {
 }
 
 #loginScreen {
-  background-color: #eae8da;
+  background-color: #fff;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -40,14 +40,14 @@ body {
 }
 
 .textInput {
-  background-color: #d9d9d9;
+  background-color: #fff;
   height: 40px;
   width: 250px;
   margin-top: 10px;
   margin-right: auto;
   font-size: 16px;
   padding-left: 10px;
-  border: 3px solid black;
+  border: 1px solid black;
   border-radius: 15px;
   display: inline;
 }
@@ -55,12 +55,12 @@ body {
 #hauntButton {
   font-size: 16px;
   font-weight: 600;
-  background-color: #f0dd34;
+  background-color: #adbadd;
   padding-top: 15px;
   padding-bottom: 15px;
   padding-left: 50px;
   padding-right: 50px;
-  border: 3px solid black;
+  border: 1px solid black;
   border-radius: 15px;
   cursor: pointer;
 }
@@ -150,10 +150,10 @@ body {
 }
 
 #speak-button {
-  border: 3px solid black;
+  border: 1px solid black;
   border-radius: 15px;
-  background-color: #22a737;
-  color: white;
+  background-color: #fff;
+  color: black;
   width: 100%;
   font-size: 28px;
   font-weight: 600;
@@ -186,7 +186,6 @@ body {
   left: 50%;
   transform: translateX(-50%);
   z-index: 1001;
-
 }
 
 #blurb {
@@ -201,9 +200,9 @@ body {
 
 @keyframes instrFade {
   0% {
-      opacity: 100%;
+    opacity: 100%;
   }
   100% {
-      opacity: 0%;
+    opacity: 0%;
   }
 }
